@@ -1,25 +1,25 @@
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
 
-  name = "workstation"
+  name = "workstation-eksctl"
   ami = data.aws_ami.centos8.id
   instance_type          = "t2.micro"
   #key_name               = "user1"
   #monitoring             = true
-  vpc_security_group_ids = [aws_security_group.allow_minikube.id]
+  vpc_security_group_ids = [aws_security_group.allow_eksctl.id]
   subnet_id              = "subnet-052c1f02446271ad0"
-  user_data = file("docker.sh")
+  user_data = file("workstation.sh")
   tags = {
     Terraform   = "true"
     Environment = "dev"
   }
 }
 
-resource "aws_security_group" "allow_minikube" {
-  name        = "allow_minikube"
+resource "aws_security_group" "allow_eksctl" {
+  name        = "allow_eksctl"
   description = "created for minikube"
   tags = {
-    Name = "allow_minikube"
+    Name = "allow_eksctl"
   }
 
   ingress {
